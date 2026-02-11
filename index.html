@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>French Demonstratives Mastery</title>
+<style>
+    body { background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
+    h1 { color: #00f2ff; text-align: center; }
+
+    /* TABS */
+    .tabs { text-align: center; margin-bottom: 20px; }
+    .tab-btn { padding: 10px 20px; cursor: pointer; background: #333; color: #ccc; border: none; margin: 5px; border-radius: 5px; font-weight: bold; }
+    .tab-btn.active { background: #00f2ff; color: #000; }
+
+    /* SECTIONS */
+    .section { display: none; padding: 20px; border: 1px solid #333; margin-top: 10px; max-width: 800px; margin-left: auto; margin-right: auto; }
+    .section.active { display: block; }
+
+    /* CARDS */
+    .card { background: #222; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 3px solid #00f2ff; }
+    input { padding: 8px; background: #000; border: 1px solid #555; color: #fff; border-radius: 3px; width: 100px; text-align: center; }
+    button.check { background: #00f2ff; border: none; padding: 8px 15px; cursor: pointer; font-weight: bold; margin-left: 10px; border-radius: 3px; }
+    button.check:hover { background: #fff; }
+    .feedback { margin-left: 10px; font-weight: bold; }
+
+    /* MATCHING */
+    .match-container { display: flex; justify-content: space-between; }
+    .col { width: 45%; }
+    .match-item { display: block; padding: 15px; margin: 5px 0; background: #333; cursor: pointer; border: 1px solid #555; text-align: center; border-radius: 5px; }
+    .match-item:hover { background: #444; }
+    .match-item.selected { background: #ff0055; border-color: #ff0055; color: #fff; }
+    .match-item.matched { background: #00ff00; color: #000; opacity: 0.5; pointer-events: none; border-color: #00ff00; }
+</style>
+<script>
+    // 1. TAB LOGIC
+    function openTab(id, btn) {
+        document.getElementById('s1').style.display = 'none';
+        document.getElementById('s2').style.display = 'none';
+        document.getElementById('s3').style.display = 'none';
+        document.getElementById(id).style.display = 'block';
+
+        var btns = document.getElementsByClassName('tab-btn');
+        for(var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+        btn.classList.add('active');
+    }
+
+    // 2. CHECK LOGIC (Generic)
+    function check(id, correct) {
+        var inp = document.getElementById(id);
+        var fb = document.getElementById('fb-' + id);
+        var val = inp.value.trim().toLowerCase();
+        var ans = correct.toLowerCase();
+
+        if(val === ans) {
+            fb.textContent = "Correct!"; fb.style.color = "#00ff00";
+            inp.style.borderColor = "#00ff00";
+        } else {
+            fb.textContent = "Try again."; fb.style.color = "#ff0000";
+            inp.style.borderColor = "#ff0000";
+        }
+    }
+
+    // 3. MATCHING LOGIC
+    var selectedLeft = null;
+    function clickLeft(el, id) {
+        if(el.classList.contains('matched')) return;
+        var items = document.querySelectorAll('#left-col .match-item');
+        for(var i=0; i<items.length; i++) items[i].classList.remove('selected');
+        el.classList.add('selected');
+        selectedLeft = { el: el, id: id };
+    }
+
+    function clickRight(el, id) {
+        if(!selectedLeft) return;
+        if(el.classList.contains('matched')) return;
+
+        if(selectedLeft.id === id) {
+            selectedLeft.el.classList.remove('selected');
+            selectedLeft.el.classList.add('matched');
+            el.classList.add('matched');
+            selectedLeft = null;
+        } else {
+            el.style.background = 'red';
+            setTimeout(function(){ el.style.background = ''; }, 300);
+        }
+    }
+</script>
+</head>
+<body>
+
+<h1>FRENCH DEMONSTRATIVES (Ce, Cet, Cette, Ces)</h1>
+
+<div class="tabs">
+    <button class="tab-btn active" onclick="openTab('s1', this)">1. Translation</button>
+    <button class="tab-btn" onclick="openTab('s2', this)">2. Matching</button>
+    <button class="tab-btn" onclick="openTab('s3', this)">3. Fill in Blanks</button>
+</div>
+
+<!-- SECTION 1: TRANSLATION (PT -> FR) -->
+<div id="s1" class="section active">
+    <h3 style="text-align:center; color:#aaa;">Translate to French (Use: Ce, Cet, Cette, Ces)</h3>
+    <div class="card">Este carro (Masculine) <input type="text" id="t1"> <button class="check" onclick="check('t1','Cette voiture')">Check</button><span id="fb-t1" class="feedback"></span></div>
+    <div class="card">Aquela casa (Feminine) <input type="text" id="t2"> <button class="check" onclick="check('t2','Cette maison')">Check</button><span id="fb-t2" class="feedback"></span></div>
+    <div class="card">Estes livros (Plural) <input type="text" id="t3"> <button class="check" onclick="check('t3','Ces livres')">Check</button><span id="fb-t3" class="feedback"></span></div>
+    <div class="card">Este homem (H Mute) <input type="text" id="t4"> <button class="check" onclick="check('t4','Cet homme')">Check</button><span id="fb-t4" class="feedback"></span></div>
+    <div class="card">Aquelas flores (Plural) <input type="text" id="t5"> <button class="check" onclick="check('t5','Ces fleurs')">Check</button><span id="fb-t5" class="feedback"></span></div>
+    <div class="card">Este amigo (Vowel) <input type="text" id="t6"> <button class="check" onclick="check('t6','Cet ami')">Check</button><span id="fb-t6" class="feedback"></span></div>
+    <div class="card">Esta mulher (Feminine) <input type="text" id="t7"> <button class="check" onclick="check('t7','Cette femme')">Check</button><span id="fb-t7" class="feedback"></span></div>
+    <div class="card">Estes dias (Plural) <input type="text" id="t8"> <button class="check" onclick="check('t8','Ces jours')">Check</button><span id="fb-t8" class="feedback"></span></div>
+    <div class="card">Este hotel (H Mute) <input type="text" id="t9"> <button class="check" onclick="check('t9','Cet hotel')">Check</button><span id="fb-t9" class="feedback"></span></div>
+    <div class="card">Aquela mesa (Feminine) <input type="text" id="t10"> <button class="check" onclick="check('t10','Cette table')">Check</button><span id="fb-t10" class="feedback"></span></div>
+</div>
+
+<!-- SECTION 2: MATCHING -->
+<div id="s2" class="section">
+    <h3 style="text-align:center; color:#aaa;">Match the Pairs</h3>
+    <div class="match-container">
+        <div class="col" id="left-col">
+            <div class="match-item" onclick="clickLeft(this, '1')">Ce (Masc. Consonant)</div>
+            <div class="match-item" onclick="clickLeft(this, '2')">Cet (Masc. Vowel/H)</div>
+            <div class="match-item" onclick="clickLeft(this, '3')">Cette (Feminine)</div>
+            <div class="match-item" onclick="clickLeft(this, '4')">Ces (Plural)</div>
+            <div class="match-item" onclick="clickLeft(this, '5')">Ce livre</div>
+            <div class="match-item" onclick="clickLeft(this, '6')">Cet arbre</div>
+            <div class="match-item" onclick="clickLeft(this, '7')">Cette fille</div>
+            <div class="match-item" onclick="clickLeft(this, '8')">Ces chiens</div>
+        </div>
+        <div class="col" id="right-col">
+            <div class="match-item" onclick="clickRight(this, '6')">This tree</div>
+            <div class="match-item" onclick="clickRight(this, '3')">This (Fem)</div>
+            <div class="match-item" onclick="clickRight(this, '8')">These dogs</div>
+            <div class="match-item" onclick="clickRight(this, '1')">This (Masc)</div>
+            <div class="match-item" onclick="clickRight(this, '5')">This book</div>
+            <div class="match-item" onclick="clickRight(this, '4')">These (Plural)</div>
+            <div class="match-item" onclick="clickRight(this, '7')">This girl</div>
+            <div class="match-item" onclick="clickRight(this, '2')">This (Before Vowel)</div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 3: FILL IN BLANKS (FRENCH) -->
+<div id="s3" class="section">
+    <h3 style="text-align:center; color:#aaa;">Complete with: ce, cet, cette, ces</h3>
+
+    <div class="card">Regarde <input type="text" id="b1"> voiture. (Fem) <button class="check" onclick="check('b1','cette')">Check</button><span id="fb-b1" class="feedback"></span></div>
+
+    <div class="card">J'aime <input type="text" id="b2"> livre. (Masc) <button class="check" onclick="check('b2','ce')">Check</button><span id="fb-b2" class="feedback"></span></div>
+
+    <div class="card"> <input type="text" id="b3"> homme est grand. (Masc + H) <button class="check" onclick="check('b3','cet')">Check</button><span id="fb-b3" class="feedback"></span></div>
+
+    <div class="card">Je veux <input type="text" id="b4"> pommes. (Plural) <button class="check" onclick="check('b4','ces')">Check</button><span id="fb-b4" class="feedback"></span></div>
+
+    <div class="card"> <input type="text" id="b5"> ami est gentil. (Masc + Vowel) <button class="check" onclick="check('b5','cet')">Check</button><span id="fb-b5" class="feedback"></span></div>
+
+    <div class="card">Tu vois <input type="text" id="b6"> maison? (Fem) <button class="check" onclick="check('b6','cette')">Check</button><span id="fb-b6" class="feedback"></span></div>
+
+    <div class="card"> <input type="text" id="b7"> enfants jouent. (Plural) <button class="check" onclick="check('b7','ces')">Check</button><span id="fb-b7" class="feedback"></span></div>
+
+    <div class="card">Je préfère <input type="text" id="b8"> pantalon. (Masc) <button class="check" onclick="check('b8','ce')">Check</button><span id="fb-b8" class="feedback"></span></div>
+
+    <div class="card"> <input type="text" id="b9"> école est grande. (Fem + Vowel) <button class="check" onclick="check('b9','cette')">Check</button><span id="fb-b9" class="feedback"></span></div>
+
+    <div class="card">Regarde <input type="text" id="b10"> oiseaux. (Plural) <button class="check" onclick="check('b10','ces')">Check</button><span id="fb-b10" class="feedback"></span></div>
+
+    <div class="card"> <input type="text" id="b11"> ordinateur est cher. (Masc + Vowel) <button class="check" onclick="check('b11','cet')">Check</button><span id="fb-b11" class="feedback"></span></div>
+
+    <div class="card">J'adore <input type="text" id="b12"> chanson. (Fem) <button class="check" onclick="check('b12','cette')">Check</button><span id="fb-b12" class="feedback"></span></div>
+
+    <div class="card"> <input type="text" id="b13"> stylo est bleu. (Masc) <button class="check" onclick="check('b13','ce')">Check</button><span id="fb-b13" class="feedback"></span></div>
+
+    <div class="card"> <input type="text" id="b14"> hôtel est complet. (Masc + H) <button class="check" onclick="check('b14','cet')">Check</button><span id="fb-b14" class="feedback"></span></div>
+
+    <div class="card">Je prends <input type="text" id="b15"> fleurs. (Plural) <button class="check" onclick="check('b15','ces')">Check</button><span id="fb-b15" class="feedback"></span></div>
+</div>
+
+</body>
+</html>
